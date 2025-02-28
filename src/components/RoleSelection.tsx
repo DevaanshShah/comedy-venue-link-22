@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Laugh, Mic, Landmark, Users } from "lucide-react";
+import { Laugh, MicStage, Landmark, Users } from "lucide-react";
 import GlassCard from "./ui-components/GlassCard";
 import AnimatedElement from "./ui-components/AnimatedElement";
 import Button from "./ui-components/Button";
@@ -27,7 +27,7 @@ const RoleSelection = () => {
     {
       id: "comedian",
       title: "Comedian",
-      icon: Mic,
+      icon: MicStage,
       description: "Create your profile, submit show proposals, and perform at top venues.",
       color: "text-comedy-purple",
       dashboard: "/comedian-dashboard",
