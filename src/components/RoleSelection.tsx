@@ -1,12 +1,12 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Laugh, MicStage, Landmark, Users } from "lucide-react";
+import { Laugh, Mic, Landmark, Users } from "lucide-react";
 import GlassCard from "./ui-components/GlassCard";
 import AnimatedElement from "./ui-components/AnimatedElement";
 import Button from "./ui-components/Button";
 
-type RoleType = "venue" | "comedian" | "audience" | null;
+type RoleType = "venue" | "comedian" | "audience" | "admin" | "location" | "artist" | "customer" | null;
 
 const RoleSelection = () => {
   const [selectedRole, setSelectedRole] = useState<RoleType>(null);
@@ -16,6 +16,38 @@ const RoleSelection = () => {
   };
 
   const roles = [
+    {
+      id: "admin",
+      title: "Admin",
+      icon: Landmark,
+      description: "Manage all events, users, and analytics for the comedy platform.",
+      color: "text-comedy-red",
+      dashboard: "/admin-dashboard",
+    },
+    {
+      id: "location",
+      title: "Location Manager",
+      icon: Landmark,
+      description: "Manage venues, capacity details, and handle event approvals.",
+      color: "text-comedy-orange",
+      dashboard: "/location-dashboard",
+    },
+    {
+      id: "artist",
+      title: "Artist",
+      icon: Mic,
+      description: "Submit event briefs, upload media, and manage your comedy career.",
+      color: "text-comedy-purple",
+      dashboard: "/artist-dashboard",
+    },
+    {
+      id: "customer",
+      title: "Customer",
+      icon: Laugh,
+      description: "Discover and filter events by day, location, genre, and artist.",
+      color: "text-comedy-magenta",
+      dashboard: "/customer-dashboard",
+    },
     {
       id: "venue",
       title: "Venue Owner",
@@ -27,7 +59,7 @@ const RoleSelection = () => {
     {
       id: "comedian",
       title: "Comedian",
-      icon: MicStage,
+      icon: Mic,
       description: "Create your profile, submit show proposals, and perform at top venues.",
       color: "text-comedy-purple",
       dashboard: "/comedian-dashboard",
@@ -51,7 +83,7 @@ const RoleSelection = () => {
         </p>
       </AnimatedElement>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mt-12">
         {roles.map((role, index) => (
           <AnimatedElement 
             key={role.id}
@@ -60,7 +92,7 @@ const RoleSelection = () => {
             className="flex"
           >
             <GlassCard 
-              className={`flex-1 p-6 cursor-pointer transition-all duration-300 ${
+              className={`flex-1 p-6 transition-all duration-300 ${
                 selectedRole === role.id 
                   ? "border-2 border-white/30 transform scale-105 shadow-xl" 
                   : "hover:scale-105"

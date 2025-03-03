@@ -7,13 +7,15 @@ interface GlassCardProps {
   className?: string;
   variant?: "default" | "neo" | "solid";
   animationDelay?: number;
+  onClick?: () => void;
 }
 
 const GlassCard = ({ 
   children, 
   className, 
   variant = "default",
-  animationDelay = 0
+  animationDelay = 0,
+  onClick
 }: GlassCardProps) => {
   const baseStyles = "rounded-xl overflow-hidden transition-all duration-500 ease-out animate-fade-in";
   
@@ -25,8 +27,9 @@ const GlassCard = ({
 
   return (
     <div 
-      className={cn(baseStyles, variantStyles[variant], className)}
+      className={cn(baseStyles, variantStyles[variant], className, onClick ? "cursor-pointer" : "")}
       style={{ animationDelay: `${animationDelay}ms` }}
+      onClick={onClick}
     >
       {children}
     </div>
