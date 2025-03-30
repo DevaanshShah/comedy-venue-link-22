@@ -6,7 +6,7 @@ import GlassCard from "./ui-components/GlassCard";
 import AnimatedElement from "./ui-components/AnimatedElement";
 import Button from "./ui-components/Button";
 
-type RoleType = "venue" | "comedian" | "audience" | "admin" | "location" | "artist" | "customer" | null;
+type RoleType = "venue" | "performer" | "audience" | "admin" | null;
 
 const RoleSelection = () => {
   const [selectedRole, setSelectedRole] = useState<RoleType>(null);
@@ -25,51 +25,27 @@ const RoleSelection = () => {
       dashboard: "/admin-dashboard",
     },
     {
-      id: "location",
-      title: "Location Manager",
-      icon: Landmark,
-      description: "Manage venues, capacity details, and handle event approvals.",
-      color: "text-comedy-orange",
-      dashboard: "/location-dashboard",
-    },
-    {
-      id: "artist",
-      title: "Artist",
-      icon: Mic,
-      description: "Submit event briefs, upload media, and manage your comedy career.",
-      color: "text-comedy-purple",
-      dashboard: "/artist-dashboard",
-    },
-    {
-      id: "customer",
-      title: "Customer",
-      icon: Laugh,
-      description: "Discover and filter events by day, location, genre, and artist.",
-      color: "text-comedy-magenta",
-      dashboard: "/customer-dashboard",
-    },
-    {
       id: "venue",
-      title: "Venue Owner",
+      title: "Venue Manager",
       icon: Landmark,
-      description: "Register your comedy venue, manage bookings, and host the best comedians.",
-      color: "text-comedy-red",
+      description: "Manage venues, capacity details, and handle event approvals and bookings.",
+      color: "text-comedy-orange",
       dashboard: "/venue-dashboard",
     },
     {
-      id: "comedian",
-      title: "Comedian",
+      id: "performer",
+      title: "Performer",
       icon: Mic,
-      description: "Create your profile, submit show proposals, and perform at top venues.",
+      description: "Create profiles, submit show proposals, upload media, and manage your comedy career.",
       color: "text-comedy-purple",
-      dashboard: "/comedian-dashboard",
+      dashboard: "/performer-dashboard",
     },
     {
       id: "audience",
-      title: "Comedy Fan",
+      title: "Audience",
       icon: Laugh,
       description: "Discover shows, book tickets, and enjoy the best live comedy experiences.",
-      color: "text-comedy-orange",
+      color: "text-comedy-magenta",
       dashboard: "/audience-dashboard",
     },
   ];
@@ -83,7 +59,7 @@ const RoleSelection = () => {
         </p>
       </AnimatedElement>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mt-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mt-12">
         {roles.map((role, index) => (
           <AnimatedElement 
             key={role.id}

@@ -90,7 +90,7 @@ const VenueDashboard = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <AnimatedElement animation="slide-up">
-              <h1 className="text-3xl font-bold mb-4 md:mb-0">Venue Dashboard</h1>
+              <h1 className="text-3xl font-bold mb-4 md:mb-0">Venue Manager Dashboard</h1>
             </AnimatedElement>
             <AnimatedElement animation="slide-up" delay={200} className="flex gap-3">
               <Button variant="outline" size="sm">
@@ -107,7 +107,7 @@ const VenueDashboard = () => {
           {/* Dashboard navigation */}
           <div className="mb-8 border-b border-white/10">
             <nav className="flex overflow-x-auto scrollbar-none">
-              {["overview", "events", "performers", "analytics", "settings"].map((tab) => (
+              {["overview", "events", "venues", "performers", "analytics", "settings"].map((tab) => (
                 <button
                   key={tab}
                   className={`px-4 py-3 font-medium capitalize whitespace-nowrap border-b-2 transition-colors ${

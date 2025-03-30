@@ -95,7 +95,7 @@ const AudienceDashboard = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <AnimatedElement animation="slide-up">
-              <h1 className="text-3xl font-bold mb-4 md:mb-0">Comedy Fan Dashboard</h1>
+              <h1 className="text-3xl font-bold mb-4 md:mb-0">Audience Dashboard</h1>
             </AnimatedElement>
             <AnimatedElement animation="slide-up" delay={200} className="w-full md:w-auto">
               <div className="relative w-full md:w-64">
