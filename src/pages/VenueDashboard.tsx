@@ -7,9 +7,28 @@ import Footer from "@/components/Footer";
 import GlassCard from "@/components/ui-components/GlassCard";
 import Button from "@/components/ui-components/Button";
 import AnimatedElement from "@/components/ui-components/AnimatedElement";
+import { useDataStore } from "@/services/DataService";
+import { toast } from "sonner";
 
 const VenueDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const showRequests = useDataStore(state => state.showRequests);
+  const updateRequestStatus = useDataStore(state => state.updateRequestStatus);
+  
+  // Filter requests for this venue (mocked as venue ID 1)
+  const venueRequests = showRequests.filter(req => 
+    req.venueId === 1 && req.status === 'pending'
+  );
+
+  const handleApprove = (requestId: number) => {
+    updateRequestStatus(requestId, 'approved');
+    toast.success("Request approved!");
+  };
+
+  const handleDecline = (requestId: number) => {
+    updateRequestStatus(requestId, 'rejected');
+    toast.error("Request declined");
+  };
 
   const stats = [
     {
@@ -62,23 +81,6 @@ const VenueDashboard = () => {
       time: "9:00 PM",
       ticketsSold: 52,
       capacity: 60,
-    },
-  ];
-
-  const comedianRequests = [
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      showTitle: "Laugh Out Loud",
-      date: "Nov 5, 2023",
-      status: "pending",
-    },
-    {
-      id: 2,
-      name: "Mike Rodriguez",
-      showTitle: "Comedy Hour",
-      date: "Nov 12, 2023",
-      status: "pending",
     },
   ];
 
@@ -183,7 +185,7 @@ const VenueDashboard = () => {
               </AnimatedElement>
             </div>
             
-            {/* Comedian Requests */}
+            {/* Performer Requests */}
             <div>
               <AnimatedElement animation="slide-up" delay={600}>
                 <GlassCard className="p-6">
@@ -194,17 +196,30 @@ const VenueDashboard = () => {
                     </Link>
                   </div>
                   
-                  {comedianRequests.length > 0 ? (
+                  {venueRequests.length > 0 ? (
                     <div className="divide-y divide-white/10">
-                      {comedianRequests.map((request) => (
+                      {venueRequests.map((request) => (
                         <div key={request.id} className="py-4">
-                          <h3 className="font-medium">{request.name}</h3>
+                          <h3 className="font-medium">{request.title}</h3>
                           <p className="text-sm text-muted-foreground mb-2">
-                            {request.showTitle} • {request.date}
+                            By: {request.performerName} • {request.date} at {request.time}
                           </p>
                           <div className="flex gap-2">
-                            <Button size="sm" variant="outline" className="flex-1">Decline</Button>
-                            <Button size="sm" className="flex-1">Accept</Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="flex-1 bg-red-950/20 hover:bg-red-950/40 text-red-400 border-red-900/50"
+                              onClick={() => handleDecline(request.id)}
+                            >
+                              Decline
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              className="flex-1 bg-green-950/20 hover:bg-green-950/40 text-green-400 border-green-900/50"
+                              onClick={() => handleApprove(request.id)}
+                            >
+                              Accept
+                            </Button>
                           </div>
                         </div>
                       ))}

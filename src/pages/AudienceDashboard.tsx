@@ -7,10 +7,14 @@ import Footer from "@/components/Footer";
 import GlassCard from "@/components/ui-components/GlassCard";
 import Button from "@/components/ui-components/Button";
 import AnimatedElement from "@/components/ui-components/AnimatedElement";
+import ComedianLeaderboard from "@/components/ComedianLeaderboard";
+import { useDataStore, Comedian } from "@/services/DataService";
+import RateComedian from "@/components/RateComedian";
 
 const AudienceDashboard = () => {
   const [activeTab, setActiveTab] = useState("discover");
-
+  const comedians = useDataStore(state => state.comedians);
+  
   const upcomingTickets = [
     {
       id: 1,
@@ -41,6 +45,7 @@ const AudienceDashboard = () => {
       price: "$25",
       rating: "4.8",
       image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+      comedianId: 1
     },
     {
       id: 2,
@@ -52,6 +57,7 @@ const AudienceDashboard = () => {
       price: "$30",
       rating: "4.7",
       image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+      comedianId: 2
     },
     {
       id: 3,
@@ -63,29 +69,14 @@ const AudienceDashboard = () => {
       price: "$35",
       rating: "4.9",
       image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81",
+      comedianId: 3
     },
   ];
 
-  const topComedians = [
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      genre: "Observational",
-      rating: "4.9",
-    },
-    {
-      id: 2,
-      name: "Mike Rodriguez",
-      genre: "Political",
-      rating: "4.8",
-    },
-    {
-      id: 3,
-      name: "Lisa Wong",
-      genre: "Dark Humor",
-      rating: "4.7",
-    },
-  ];
+  // Find comedian by ID helper
+  const findComedian = (id: number): Comedian | undefined => {
+    return comedians.find(c => c.id === id);
+  };
 
   return (
     <div className="min-h-screen">
@@ -181,6 +172,11 @@ const AudienceDashboard = () => {
             </GlassCard>
           </AnimatedElement>
           
+          {/* Comedian Leaderboard Section */}
+          <div className="mb-8">
+            <ComedianLeaderboard />
+          </div>
+          
           {/* Recommended Events */}
           <div className="mb-8">
             <div className="flex justify-between items-center mb-6">
@@ -225,6 +221,20 @@ const AudienceDashboard = () => {
                           {event.date} • {event.time}
                         </div>
                       </div>
+                      {event.comedianId && findComedian(event.comedianId) && (
+                        <div className="mb-4">
+                          <p className="text-sm mb-1">Featuring:</p>
+                          <div className="flex justify-between items-center bg-white/5 p-2 rounded">
+                            <span className="font-medium">{findComedian(event.comedianId)?.name}</span>
+                            <RateComedian 
+                              comedian={findComedian(event.comedianId)!} 
+                              triggerComponent={
+                                <Button size="sm" variant="outline">Rate</Button>
+                              }
+                            />
+                          </div>
+                        </div>
+                      )}
                       <div className="mt-auto flex items-center justify-between">
                         <span className="font-medium">{event.price}</span>
                         <Button size="sm">Book Tickets</Button>
@@ -235,37 +245,6 @@ const AudienceDashboard = () => {
               ))}
             </div>
           </div>
-          
-          {/* Top Comedians */}
-          <AnimatedElement animation="slide-up" delay={800}>
-            <GlassCard className="p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold">Top Comedians</h2>
-                <Link to="/comedians" className="text-sm text-comedy-orange hover:underline flex items-center">
-                  View All <ChevronRight size={16} />
-                </Link>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {topComedians.map((comedian) => (
-                  <div key={comedian.id} className="bg-white/5 rounded-lg p-4 border border-white/10 text-center">
-                    <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-comedy-darker flex items-center justify-center">
-                      {comedian.name.charAt(0)}
-                    </div>
-                    <h3 className="font-bold">{comedian.name}</h3>
-                    <p className="text-muted-foreground text-sm mb-2">{comedian.genre}</p>
-                    <div className="flex items-center justify-center">
-                      <Star size={14} className="text-comedy-orange mr-1" />
-                      <span>{comedian.rating}</span>
-                    </div>
-                    <Button variant="outline" size="sm" className="mt-3 w-full">
-                      Follow
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </GlassCard>
-          </AnimatedElement>
         </div>
       </div>
       

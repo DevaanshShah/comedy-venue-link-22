@@ -7,9 +7,14 @@ import Footer from "@/components/Footer";
 import GlassCard from "@/components/ui-components/GlassCard";
 import Button from "@/components/ui-components/Button";
 import AnimatedElement from "@/components/ui-components/AnimatedElement";
+import SubmitShowRequest from "@/components/SubmitShowRequest";
+import { useDataStore } from "@/services/DataService";
 
 const PerformerDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const showRequests = useDataStore(state => state.showRequests);
+  
+  const myRequests = showRequests.filter(req => req.performerId === 1); // Mock performer ID
 
   const stats = [
     {
@@ -86,25 +91,6 @@ const PerformerDashboard = () => {
       location: "Miami, FL",
       date: "Nov 22, 2023",
       compensation: "$300",
-    },
-  ];
-
-  const submittedEvents = [
-    {
-      id: 1,
-      title: "Weekend Laughs",
-      venue: "The Laughing Pint",
-      date: "Nov 18, 2023",
-      time: "8:00 PM",
-      status: "approved",
-    },
-    {
-      id: 2,
-      title: "Comedy Night Special",
-      venue: "Comedy Cellar",
-      date: "Nov 25, 2023",
-      time: "7:30 PM",
-      status: "pending",
     },
   ];
 
@@ -203,10 +189,7 @@ const PerformerDashboard = () => {
                   </div>
                   
                   <div className="mt-6">
-                    <Button variant="outline" className="w-full">
-                      <Plus size={16} className="mr-2" />
-                      Propose New Show
-                    </Button>
+                    <SubmitShowRequest />
                   </div>
                 </GlassCard>
               </AnimatedElement>
@@ -305,40 +288,48 @@ const PerformerDashboard = () => {
               <AnimatedElement animation="slide-up" delay={800} className="mt-6">
                 <GlassCard className="p-6">
                   <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-bold">Submitted Events</h2>
+                    <h2 className="text-xl font-bold">My Show Requests</h2>
                   </div>
                   
-                  <div className="divide-y divide-white/10">
-                    {submittedEvents.map((event) => (
-                      <div key={event.id} className="py-4">
-                        <h3 className="font-medium">{event.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-1">
-                          {event.venue}
-                        </p>
-                        <div className="flex justify-between text-sm mb-3">
-                          <span className="text-muted-foreground">
-                            <Clock size={14} className="inline mr-1" />
-                            {event.date}, {event.time}
-                          </span>
-                          <span className={`px-2 py-0.5 rounded-full text-xs ${
-                            event.status === 'approved' 
-                              ? 'bg-green-900/30 text-green-400' 
-                              : 'bg-yellow-900/30 text-yellow-400'
-                          }`}>
-                            {event.status === 'approved' ? 'Approved' : 'Pending'}
-                          </span>
+                  {myRequests.length > 0 ? (
+                    <div className="divide-y divide-white/10">
+                      {myRequests.map((request) => (
+                        <div key={request.id} className="py-4">
+                          <h3 className="font-medium">{request.title}</h3>
+                          <p className="text-sm text-muted-foreground mb-1">
+                            {request.venueName}
+                          </p>
+                          <div className="flex justify-between text-sm mb-3">
+                            <span className="text-muted-foreground">
+                              <Clock size={14} className="inline mr-1" />
+                              {request.date}, {request.time}
+                            </span>
+                            <span className={`px-2 py-0.5 rounded-full text-xs ${
+                              request.status === 'approved' 
+                                ? 'bg-green-900/30 text-green-400' 
+                                : request.status === 'rejected'
+                                ? 'bg-red-900/30 text-red-400'
+                                : 'bg-yellow-900/30 text-yellow-400'
+                            }`}>
+                              {request.status === 'approved' 
+                                ? 'Approved' 
+                                : request.status === 'rejected'
+                                ? 'Rejected'
+                                : 'Pending'}
+                            </span>
+                          </div>
+                          <Button size="sm" variant="outline" className="w-full">View Details</Button>
                         </div>
-                        <Button size="sm" variant="outline" className="w-full">View Details</Button>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="mt-6">
-                    <Button variant="outline" className="w-full">
-                      <Plus size={16} className="mr-2" />
-                      Submit New Event
-                    </Button>
-                  </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-muted-foreground">No requests submitted yet</p>
+                      <Button className="mt-4" onClick={() => document.querySelector<HTMLButtonElement>('[data-testid="submit-show-request"]')?.click()}>
+                        Submit Your First Request
+                      </Button>
+                    </div>
+                  )}
                 </GlassCard>
               </AnimatedElement>
             </div>
