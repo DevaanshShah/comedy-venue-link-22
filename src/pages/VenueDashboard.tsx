@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Calendar, Users, DollarSign, Building2, Plus, ChevronRight, Search } from "lucide-react";
